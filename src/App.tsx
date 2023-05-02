@@ -1,24 +1,57 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  UseLasterView,
+  UseMountView,
+  UseUnmountedRefView,
+  UsseSafeStateView,
+  UseUpdateView,
+  UseCreationView,
+  UseReactiveView,
+  UseDebounceFnView,
+  UseDebounceView,
+  UseThrottleFnView,
+  UseThrottleView,
+  UseLockFnView,
+  UseCopyView,
+  UseTextSelectionView,
+  UseResponsiveView,
+  UseTrackedEffectView,
+  UseHoverView,
+  UseDocumentVisibilityView,
+  UseFullscreenView,
+  UseNetworkView,
+  UseCssView,
+  UseInViewportView,
+  UseSelectionsView,
+  UseCountDownView,
+} from "./hooksView";
 
-function App() {
+function App(props: any) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ padding: 20 }}>
+      {/* <UseLasterView /> */}
+      {/* <UseMountView /> */}
+      {/* <UseUnmountedRefView /> */}
+      {/* <UsseSafeStateView /> */}
+      {/* <UseUpdateView /> */}
+      {/* <UseCreationView /> */}
+      {/* <UseReactiveView /> */}
+      {/* <UseDebounceView /> */}
+      {/* <UseThrottleFnView /> */}
+      {/* <UseThrottleView /> */}
+      {/* <UseLockFnView /> */}
+      {/* <UseFullscreenView /> */}
+      {/* <UseCopyView /> */}
+      {/* <UseTextSelectionView /> */}
+      {/* <UseResponsiveView /> */}
+      {/* <UseTrackedEffectView /> */}
+      {/* <UseDebounceFnView /> */}
+      {/* <UseHoverView /> */}
+      {/* <UseDocumentVisibilityView /> */}
+      {/* <UseNetworkView /> */}
+      {/* <UseCssView /> */}
+      {/* <UseInViewportView /> */}
+      {/* <UseSelectionsView /> */}
+      <UseCountDownView />
     </div>
   );
 }

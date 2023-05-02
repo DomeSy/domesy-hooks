@@ -1,0 +1,19 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.box {
+  height: 50px;
+  width: 50px;
+  top: 0;
+  left: 0;
+  background: red;
+  position: absolute;
+}
+
+.parent {
+  height: 50px;
+  border: 1px solid black;
+  position: relative;
+}
