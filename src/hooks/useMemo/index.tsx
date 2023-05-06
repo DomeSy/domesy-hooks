@@ -13,8 +13,6 @@ const useSafeState = <S extends Record<string, any>>(
 
   const setMergeState = useCallback((patch: any) => {
     setState((prevState) => {
-      console.log("11");
-
       const newState = isFunction(patch) ? patch(prevState) : patch;
       return newState ? { ...prevState, ...newState } : prevState;
     });
