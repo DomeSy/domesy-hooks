@@ -1,5 +1,7 @@
 # 玩转 React Hooks 小册
 
+小册链接：[《玩转 React Hooks》](https://juejin.cn/book/7230622711905517605?utm_source=course_list)
+
 ## 作者介绍
 
 ![作者简介(2100x389).jpg](https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8213bce41f144f209789f8006413a22c~tplv-k3u1fbpfcp-watermark.image?)
