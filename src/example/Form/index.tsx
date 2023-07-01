@@ -1,18 +1,17 @@
-import React, { useEffect, isValidElement } from "react";
+import React, { useEffect, useRef } from "react";
 import { Button, Select, Checkbox, Input } from "antd";
+import { FormInstance } from "./HooksForm/useForm/interface.d";
 import Form from "./HooksForm";
 
 const Index: React.FC = () => {
-  useEffect(() => {
-    // console.log(isValidElement("小杜杜"), "--1");
-    // console.log(isValidElement(<div>1</div>), "--2");
-  }, []);
+  const ref = useRef<FormInstance>(null);
 
   return (
     <>
       <h1>自定义Form：</h1>
       <Form
         initialValues={{ book: "玩转 React Hooks" }}
+        ref={ref}
         onFinish={(data: any) => {
           console.log("表单数据:", data);
         }}
@@ -34,7 +33,7 @@ const Index: React.FC = () => {
           <Input placeholder="提示语" />
         </Form.Item>
 
-        {/* <Form.Item
+        <Form.Item
           label="必填1"
           name="rules"
           tooltip="rules必填"
@@ -82,7 +81,7 @@ const Index: React.FC = () => {
           ]}
         >
           <Input />
-        </Form.Item> */}
+        </Form.Item>
 
         <Form.Item
           rules={[{ required: true, message: "请输入必填" }]}
@@ -105,10 +104,45 @@ const Index: React.FC = () => {
             提交
           </Button>
           <Button style={{ marginLeft: 4 }} htmlType="reset">
-            重制
+            重置
           </Button>
         </Form.Item>
       </Form>
+
+      <div>
+        ref获取表单数据：
+        <Button
+          type="primary"
+          onClick={() => {
+            console.log("ref获取实例", ref);
+            const store = ref.current?.getFieldValue();
+            console.log("ref 获取表单数据", store);
+          }}
+        >
+          表单数据
+        </Button>
+        <Button
+          type="primary"
+          onClick={() =>
+            ref.current?.submit((data: any) => {
+              console.log("ref提交按钮", data);
+            })
+          }
+          style={{ marginLeft: 8 }}
+        >
+          提交
+        </Button>
+        <Button
+          style={{ marginLeft: 8 }}
+          onClick={() => {
+            ref.current?.resetFields(() => {
+              console.log("ref 重置成功");
+            });
+          }}
+        >
+          重置
+        </Button>
+      </div>
     </>
   );
 };

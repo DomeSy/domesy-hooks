@@ -25,9 +25,13 @@ const Index: React.FC = () => {
           <Input placeholder="请输入小册名称" />
         </Form.Item>
 
+        <Form.Item label="作者" name="name">
+          <Input placeholder="请输入作者" />
+        </Form.Item>
+
         <Form.Item
-          label="作者"
-          name="name"
+          label="必填"
+          name="rules"
           rules={[{ required: true, message: "请输入规则" }]}
         >
           <Input placeholder="请输入作者" />
@@ -54,7 +58,7 @@ const Index: React.FC = () => {
             提交
           </Button>
           <Button style={{ marginLeft: 4 }} htmlType="reset">
-            重制
+            重置
           </Button>
         </Form.Item>
       </Form>

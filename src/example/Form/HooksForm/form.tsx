@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { forwardRef, useImperativeHandle } from "react";
 import FormContext from "./useForm/FormContext";
-import { DataProps } from "./useForm/interface.d";
+import { DataProps, FormInstance } from "./useForm/interface.d";
 import useForm from "./useForm";
 
 interface FormProps {
@@ -8,11 +8,13 @@ interface FormProps {
   onFinish?: (data: any) => void;
   onFinishFailed?: (errorInfo: any) => void;
   initialValues?: DataProps;
+  form?: FormInstance;
   [key: string]: any;
 }
 
-const Index = (props: FormProps) => {
+const Index = (props: FormProps, ref: any) => {
   const {
+    form,
     children,
     onFinish = (data: any) => {},
     onReset = () => {},
@@ -21,7 +23,19 @@ const Index = (props: FormProps) => {
     ...payload
   } = props;
 
-  const [formRef] = useForm(initialValues);
+  const [formRef] = useForm(initialValues, form);
+
+  // 用于剔除方法，不提供给外部使用
+  const {
+    registerField,
+    unRegisterField,
+    dispatch,
+    setConfigWays,
+    ...formRefInstance
+  } = formRef;
+
+  /* Form 能够被 ref 标记，并操作实例。 */
+  useImperativeHandle(ref, () => formRefInstance, []);
 
   formRef.setConfigWays({
     onFinish,
@@ -49,4 +63,4 @@ const Index = (props: FormProps) => {
   );
 };
 
-export default Index;
+export default forwardRef(Index);

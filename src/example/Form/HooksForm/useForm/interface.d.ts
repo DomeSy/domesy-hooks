@@ -6,17 +6,13 @@ export interface ConfigWayProps {
 }
 
 export interface FormInstance {
+  registerField: (name: NameProps, updateChange: DataProps) => void;
   unRegisterField: (name: NameProps) => void;
-  registerField: (
-    name: NameProps,
-    updateChange: DataProps
-    // rules?: DataValidateProps[]
-  ) => void;
-  getFieldValue: (name: NameProps) => any;
+  getFieldValue: (name?: NameProps) => any;
   dispatch: (action: ReducerAction) => void;
   setConfigWays: (callbacks: ConfigWayProps) => void;
-  submit: () => void;
-  resetFields: () => void;
+  submit: (cb?: any) => void;
+  resetFields: (cb?: () => void) => void;
   getFieldValidate: (name: NameProps) => any;
 }
 
@@ -36,10 +32,10 @@ export interface validateRule {
 }
 
 export interface validateRuleListProps {
-  message: string;
   required: boolean;
-  status: validateStatusProps;
   requiredMessage?: string;
+  message: string;
+  status: validateStatusProps;
   rules: rulesProps[];
 }
 
@@ -49,17 +45,12 @@ interface rulesProps {
 }
 
 export interface validateRuleProps {
-  message?: string;
   required?: boolean;
+  message?: string;
   rule?: RegExp | ((value: any) => boolean);
-  status?: validateStatusProps;
 }
 
 export type validateStatusProps = "res" | "rej" | "pen"; // res 成功 rej 失败 pen 等待
-
-export interface DataValidateProps {
-  [key: string]: validateRuleProps[] | null;
-}
 
 export interface DataProps {
   [key: string]: any;

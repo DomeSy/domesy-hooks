@@ -1,57 +1,19 @@
 import {
-  UseLasterView,
-  UseMountView,
-  UseUnmountedRefView,
-  UsseSafeStateView,
-  UseUpdateView,
-  UseCreationView,
-  UseReactiveView,
-  UseDebounceFnView,
-  UseDebounceView,
-  UseThrottleFnView,
-  UseThrottleView,
-  UseLockFnView,
-  UseCopyView,
-  UseTextSelectionView,
-  UseResponsiveView,
-  UseTrackedEffectView,
-  UseHoverView,
-  UseDocumentVisibilityView,
-  UseFullscreenView,
-  UseNetworkView,
-  UseCssView,
-  UseInViewportView,
-  UseSelectionsView,
-  UseCountDownView,
-} from "./hooksView";
+  ReduxView,
+  UseReduxView,
+  BatchedUpdatesView,
+  AntDForm,
+  Form,
+} from "./example";
 
 function App(props: any) {
   return (
     <div style={{ padding: 20 }}>
-      {/* <UseLasterView /> */}
-      {/* <UseMountView /> */}
-      {/* <UseUnmountedRefView /> */}
-      {/* <UsseSafeStateView /> */}
-      {/* <UseUpdateView /> */}
-      {/* <UseCreationView /> */}
-      {/* <UseReactiveView /> */}
-      {/* <UseDebounceView /> */}
-      {/* <UseThrottleFnView /> */}
-      {/* <UseThrottleView /> */}
-      {/* <UseLockFnView /> */}
-      {/* <UseFullscreenView /> */}
-      {/* <UseCopyView /> */}
-      {/* <UseTextSelectionView /> */}
-      {/* <UseResponsiveView /> */}
-      {/* <UseTrackedEffectView /> */}
-      {/* <UseDebounceFnView /> */}
-      {/* <UseHoverView /> */}
-      {/* <UseDocumentVisibilityView /> */}
-      {/* <UseNetworkView /> */}
-      {/* <UseCssView /> */}
-      {/* <UseInViewportView /> */}
-      {/* <UseSelectionsView /> */}
-      <UseCountDownView />
+      {/* <ReduxView /> */}
+      {/* <UseReduxView /> */}
+      {/* <BatchedUpdatesView /> */}
+      {/* <AntDForm /> */}
+      <Form />
     </div>
   );
 }

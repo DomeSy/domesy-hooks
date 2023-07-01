@@ -13,7 +13,6 @@ interface FormItemProps {
 }
 
 const FormItem = (props: FormItemProps) => {
-  console.log(props, "998");
   const { name, children } = props;
   const update = useUpdate();
 
@@ -38,7 +37,6 @@ const FormItem = (props: FormItemProps) => {
   }, [contextValue, name]);
 
   useEffect(() => {
-    console.log(name, "009");
     // 注册
     name && registerField(name, updateChange);
     return () => {

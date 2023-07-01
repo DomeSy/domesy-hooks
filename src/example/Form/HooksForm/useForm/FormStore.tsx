@@ -4,9 +4,7 @@ import {
   DataProps,
   ReducerAction,
   NameProps,
-  validateRuleProps,
   validateRuleListProps,
-  DataValidateProps,
   updateProps,
   validateRule,
   updateChangeProps,
@@ -18,7 +16,8 @@ class FormStore {
   update_store: updateChangeProps = {}; // 保存更新的对象
   initialValues: DataProps = {}; // 保存初始值
   configWays: ConfigWayProps = {}; // 收录对应的方法集合
-  validateRule: validateRule = {}; // 每个表单的规则项
+  validateRule: validateRule = {}; // 校验表单的规则
+  validateQueue: any[] = []; // 校验队列
 
   constructor(initialValues: DataProps) {
     this.store = initialValues;
@@ -27,14 +26,14 @@ class FormStore {
 
   // 用于暴露方法
   public getDetail = (): FormInstance => ({
-    unRegisterField: this.unRegisterField,
-    registerField: this.registerField,
-    getFieldValue: this.getFieldValue,
-    dispatch: this.dispatch,
-    setConfigWays: this.setConfigWays,
-    submit: this.submit,
-    resetFields: this.resetFields,
-    getFieldValidate: this.getFieldValidate,
+    unRegisterField: this.unRegisterField, // 卸载表单方法
+    registerField: this.registerField, // 注册表单方法
+    getFieldValue: this.getFieldValue, // 获取对应的值
+    dispatch: this.dispatch, // 方法派发
+    setConfigWays: this.setConfigWays, // 设置方法区间
+    submit: this.submit, // 用于表单提交
+    resetFields: this.resetFields, // 重置表单
+    getFieldValidate: this.getFieldValidate, // 获取表单的验证值
   });
 
   // 注册表单方法
@@ -73,8 +72,9 @@ class FormStore {
   };
 
   // 获取对应的值
-  getFieldValue = (name: NameProps) => {
-    return this.store[name];
+  getFieldValue = (name?: NameProps) => {
+    if (name) return this.store[name];
+    return this.store;
   };
 
   // 获取表单的验证值
@@ -94,7 +94,7 @@ class FormStore {
       // 触发检验
       case "validateField": {
         const { name } = action;
-        this.validateFieldValue(name);
+        this.validateFieldValue(name); // 触发单个更新
         break;
       }
       default:
@@ -123,13 +123,20 @@ class FormStore {
   };
 
   // 用于表单提交
-  submit = () => {
+  submit = (cb?: any) => {
     const status = this.validateField();
 
     const { onFinish, onFinishFailed } = this.configWays;
 
     if (!status) {
       const errorFields = this.errorValidateFields();
+
+      cb &&
+        cb({
+          errorFields,
+          values: this.store,
+        });
+
       onFinishFailed &&
         onFinishFailed({
           errorFields,
@@ -137,6 +144,7 @@ class FormStore {
         });
     } else {
       onFinish && onFinish(this.store);
+      cb && cb(this.store);
     }
   };
 
@@ -168,6 +176,7 @@ class FormStore {
     if (!data) return null;
     const value = this.store[name];
     const last_status = data.status;
+    const last_message = data.message;
     let status: validateStatusProps = "res";
     if (data.required && !value) {
       status = "rej";
@@ -188,36 +197,31 @@ class FormStore {
       }
     });
 
-    // 如果状态不一致，则进行更新
-    if (last_status !== status) this.updateStoreField(name);
+    // 如果状态或错误提示不一致，则进行更新
+    if (last_status !== status || last_message !== data.message) {
+      const validateUpdate = this.updateStoreField.bind(this, name);
+      this.validateQueue.push(validateUpdate);
+    }
+
+    this.promiseValidate();
 
     data.status = status;
-
-    // data.map((v: any) => {
-    //   const last_status = v.status;
-    //   let status: validateStatusProps = "res";
-    //   if (v.required && !value) status = "rej";
-
-    //   if (value && v.rule && v.rule instanceof RegExp) {
-    //     status = v.rule.test(value) ? "res" : "rej";
-    //   }
-
-    //   if (value && v.rule && typeof v.rule === "function") {
-    //     status = v.rule(value) ? "res" : "rej";
-    //   }
-
-    //   // 如果状态不一致，则进行更新
-    //   if (last_status !== status) this.updateStoreField(name);
-
-    //   v.status = status;
-    //   status_lists = [...status_lists, status];
-    //   return v;
-    // });
     return status;
   };
 
+  // 异步校验队列
+  promiseValidate = () => {
+    if (this.validateQueue.length === 0) return null;
+    Promise.resolve().then(() => {
+      do {
+        let validateUpdate = this.validateQueue.shift();
+        validateUpdate && validateUpdate(); /* 触发更新 */
+      } while (this.validateQueue.length > 0);
+    });
+  };
+
   // 重置表单
-  resetFields = () => {
+  resetFields = (cb?: () => void) => {
     const { onReset } = this.configWays;
     Object.keys(this.store).forEach((key) => {
       // 重置表单的时候，如果有初始值，就用初始值，没有就删除
@@ -226,6 +230,15 @@ class FormStore {
         : delete this.store[key];
       this.updateStoreField(key);
     });
+
+    Object.keys(this.validateRule).forEach((key) => {
+      const data = this.validateRule[key];
+      if (data) {
+        if (data.status === "rej") this.updateStoreField(key);
+        data.status = "pen";
+      }
+    });
+    cb && cb();
     onReset && onReset();
   };
 }
